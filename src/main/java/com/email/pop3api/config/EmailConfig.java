@@ -59,6 +59,11 @@ public class EmailConfig {
         outlookProperties.put("mail.pop3.host", "pop-mail.outlook.com");
         configMap.put("outlook.com", outlookProperties);
 
+        // 新浪配置
+        final Properties sinaProperties = ObjectUtil.clone(commonProperties);
+        sinaProperties.put("mail.pop3.host", "pop.sina.com");
+        configMap.put("sina.com", sinaProperties);
+
         // 163配置
         final Properties neteaseProperties = ObjectUtil.clone(commonProperties);
         neteaseProperties.put("mail.pop3.host", "pop.163.com");
