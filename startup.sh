@@ -14,5 +14,5 @@ killall java
 yum install -y git
 yum install -y maven
 
-git clone https://github.com/serical/pop3-api /root
+git clone https://github.com/serical/pop3-api /root/pop3-api
 cd /root/pop3-api && mvn -DskipTests=true package && (nohup java -jar target/pop3-api-0.0.1-SNAPSHOT.jar --password="$password" &) || exit
