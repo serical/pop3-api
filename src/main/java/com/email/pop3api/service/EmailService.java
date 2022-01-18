@@ -34,7 +34,7 @@ public class EmailService {
             final Properties properties = EmailConfig.getEmailConfig(suffix);
 
             final Session session = Session.getDefaultInstance(properties);
-            session.setDebug(true);
+            // session.setDebug(true);
 
             final URLName urlName = new URLName("pop3", properties.getProperty("mail.pop3.host"),
                     NumberUtil.parseInt(properties.getProperty("mail.pop3.port")), "",
@@ -47,17 +47,18 @@ public class EmailService {
 
             final int count = folder.getMessageCount();
             final Message message = folder.getMessage(count);
-            System.out.println("邮件主题：" + message.getSubject());
-            System.out.println("发件人：");
-            showAddress(message.getFrom());
-            System.out.println("收件人：");
-            showAddress(message.getRecipients(Message.RecipientType.TO));
-            System.out.println("抄送人：");
-            showAddress(message.getRecipients(Message.RecipientType.CC));
-            System.out.println("密送人：");
-            showAddress(message.getRecipients(Message.RecipientType.BCC));
             final String body = getBody(message);
-            System.out.println("邮件内容：" + body);
+
+//            System.out.println("邮件主题：" + message.getSubject());
+//            System.out.println("发件人：");
+//            showAddress(message.getFrom());
+//            System.out.println("收件人：");
+//            showAddress(message.getRecipients(Message.RecipientType.TO));
+//            System.out.println("抄送人：");
+//            showAddress(message.getRecipients(Message.RecipientType.CC));
+//            System.out.println("密送人：");
+//            showAddress(message.getRecipients(Message.RecipientType.BCC));
+//            System.out.println("邮件内容：" + body);
 
             return body;
         } catch (Exception e) {
