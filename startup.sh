@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-password=$1
+username=$1
+password=$2
 if [ -z "${password}" ]; then
   echo "请输入接口认证密码"
   exit 1
@@ -17,6 +18,6 @@ git clone https://github.com/serical/pop3-api /root/pop3-api
 killall java
 cd /root/pop3-api &&
   mvn -DskipTests=true package &&
-  (nohup java -jar target/pop3-api-0.0.1-SNAPSHOT.jar --password="$password" >nohup.out 2>&1 &) &&
+  (nohup java -jar target/pop3-api-0.0.1-SNAPSHOT.jar --username="$username" --password="$password" >nohup.out 2>&1 &) &&
   echo "完成pop3邮件接口部署..." &&
   exit

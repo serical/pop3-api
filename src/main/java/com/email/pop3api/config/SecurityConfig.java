@@ -19,6 +19,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final BCryptPasswordEncoder encoder;
 
+    @Value("${username}")
+    private String username;
+
     @Value("${password}")
     private String password;
 
@@ -30,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("admin")
+                .withUser(username)
                 .password(encoder.encode(password))
                 .roles("USER");
     }

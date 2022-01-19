@@ -9,7 +9,7 @@ public class MainTest {
     @Test
     public void testPing() {
         final HttpResponse response = HttpRequest.post("localhost:8080/api/v1/email/ping")
-                .basicAuth("admin", "asdfa")
+                .basicAuth("nima", "asdfa")
                 .execute();
         System.out.println(response);
     }
