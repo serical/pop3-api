@@ -2,6 +2,11 @@
 
 username=$1
 password=$2
+
+if [ -z "${username}" ]; then
+  echo "请输入接口认证用户名"
+  exit 1
+fi
 if [ -z "${password}" ]; then
   echo "请输入接口认证密码"
   exit 1
