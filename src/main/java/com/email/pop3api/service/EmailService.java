@@ -4,12 +4,14 @@ import cn.hutool.core.util.NumberUtil;
 import com.email.pop3api.config.EmailConfig;
 import com.email.pop3api.exception.BusinessException;
 import com.email.pop3api.params.EmailParam;
+import com.google.common.collect.Lists;
 import com.sun.mail.pop3.POP3SSLStore;
 import jakarta.mail.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -29,6 +31,7 @@ public class EmailService {
     public Object getLastEmail(EmailParam param) {
         POP3SSLStore store = null;
         Folder folder = null;
+        List<String> result = Lists.newArrayList();
         try {
             final String suffix = param.getUserEmail().split("@")[1];
             final Properties properties = EmailConfig.getEmailConfig(suffix);
@@ -46,8 +49,19 @@ public class EmailService {
             folder.open(Folder.READ_ONLY);
 
             final int count = folder.getMessageCount();
-            final Message message = folder.getMessage(count);
-            final String body = getBody(message);
+            if (count == -1) {
+                return result;
+            }
+
+            int end = 0;
+            if (count >= param.getEmailNum()) {
+                end = count - param.getEmailNum();
+            }
+            for (int i = count; i > end; i--) {
+                final Message message = folder.getMessage(i);
+                final String body = getBody(message);
+                result.add(body);
+            }
 
 //            System.out.println("邮件主题：" + message.getSubject());
 //            System.out.println("发件人：");
@@ -60,7 +74,7 @@ public class EmailService {
 //            showAddress(message.getRecipients(Message.RecipientType.BCC));
 //            System.out.println("邮件内容：" + body);
 
-            return body;
+            return result;
         } catch (Exception e) {
             e.printStackTrace();
             throw new BusinessException(e.getMessage());

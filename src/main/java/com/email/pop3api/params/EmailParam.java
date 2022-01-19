@@ -21,4 +21,9 @@ public class EmailParam implements Serializable {
      * pop3登录授权码
      */
     private String authorizeCode;
+
+    /**
+     * 邮件数量
+     */
+    private Integer emailNum;
 }

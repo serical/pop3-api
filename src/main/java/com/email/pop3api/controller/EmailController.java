@@ -37,11 +37,16 @@ public class EmailController {
      *
      * @param param 参数
      */
-    @PostMapping("/getLastEmail")
+    @PostMapping("/last")
     public Object getLastEmail(@RequestBody EmailParam param) {
         Preconditions.checkArgument(StrUtil.isNotBlank(param.getUserEmail()), "邮箱不能为空");
         Preconditions.checkArgument(Validator.isEmail(param.getUserEmail()), "邮箱格式错误");
         Preconditions.checkArgument(StrUtil.isNotBlank(param.getAuthorizeCode()), "pop登录授权码不能为空");
+
+        // 邮件数量为空 || <=0 || > 5 默认为1
+        if (null == param.getEmailNum() || param.getEmailNum() <= 0 || param.getEmailNum() > 5) {
+            param.setEmailNum(1);
+        }
 
         return Result.success(emailService.getLastEmail(param));
     }
