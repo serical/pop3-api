@@ -6,14 +6,13 @@ if [ -z "${password}" ]; then
   exit 1
 fi
 
-yum install -y java-1.8.0-openjdk
-yum install -y psmisc
-
-killall java
-
-yum install -y git
-yum install -y maven
+hash java >/dev/null 2>&1 || yum install -y java-1.8.0-openjdk
+hash killall >/dev/null 2>&1 || yum install -y psmisc
+hash git >/dev/null 2>&1 || yum install -y git
+hash mvn >/dev/null 2>&1 || yum install -y maven
 
 rm -rf /root/pop3-api && mkdir -p /root/pop3-api
 git clone https://github.com/serical/pop3-api /root/pop3-api
-cd /root/pop3-api && mvn -DskipTests=true package && (nohup java -jar target/pop3-api-0.0.1-SNAPSHOT.jar --password="$password" &) || exit
+
+killall java
+cd /root/pop3-api && mvn -DskipTests=true package && (nohup java -jar target/pop3-api-0.0.1-SNAPSHOT.jar --password="$password" &) && exit
