@@ -1,8 +1,8 @@
 package com.email.pop3api.result;
 
 import com.email.pop3api.enums.ResultEnums;
-import org.hashids.Hashids;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.email.pop3api.interceptor.MDCInterceptor;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,13 +12,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class Result {
-
-    private static Hashids hashids;
-
-    @Autowired
-    public void setHashids(Hashids hashids) {
-        Result.hashids = hashids;
-    }
 
     /**
      * 成功不返回数据
@@ -69,7 +62,7 @@ public class Result {
      */
     private static ResultEntity result(int status, String message, Object data) {
         ResultEntity resultEntity = new ResultEntity();
-        resultEntity.setMessageId(hashids.encode(System.currentTimeMillis()));
+        resultEntity.setMessageId(MDC.get(MDCInterceptor.REQUEST_ID));
         resultEntity.setStatus(status);
         resultEntity.setMessage(message);
         resultEntity.setData(data);

@@ -1,11 +1,13 @@
 package com.email.pop3api.config;
 
 import cn.hutool.core.lang.Snowflake;
+import com.email.pop3api.interceptor.MDCInterceptor;
 import org.hashids.Hashids;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -32,11 +34,16 @@ public class ComponentConfig {
     }
 
     @Bean
-    public WebMvcConfigurer webMvcConfigurer() {
+    public WebMvcConfigurer webMvcConfigurer(MDCInterceptor mdcInterceptor) {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**").allowedOriginPatterns("*").allowedMethods("*").allowCredentials(true);
+            }
+
+            @Override
+            public void addInterceptors(InterceptorRegistry registry) {
+                registry.addInterceptor(mdcInterceptor);
             }
         };
     }

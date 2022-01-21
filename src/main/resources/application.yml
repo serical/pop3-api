@@ -1,2 +1,5 @@
 server:
   port: 80
+logging:
+  pattern:
+    level: requestId:%X{requestId} %5p
